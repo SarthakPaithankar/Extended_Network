@@ -1,0 +1,214 @@
+NY#show run  
+Building configuration...
+
+
+Current configuration : 2955 bytes
+!
+! Last configuration change at 07:57:51 UTC Wed Mar 11 2026
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname NY
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+no network-clock-participate slot 2 
+!
+dot11 syslog
+ip source-route
+!
+ip vrf si 
+ rd 100:1 
+!         
+ip cef    
+!
+!
+!
+!
+ip host usgovt 6.6.6.6
+ip name-server vrf si 6.6.6.6
+ip name-server 6.6.6.6
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!         
+crypto pki token default removal timeout 0
+!
+!
+!
+!
+license udi pid CISCO3825 sn FHK1341F0FK
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip vrf forwarding si
+ ip address 192.168.10.1 255.255.255.255
+!
+interface Loopback1
+ ip address 192.168.10.1 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ ip address 10.0.100.8 255.255.255.254
+ ip ospf cost 10
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex auto
+ speed 100
+ media-type rj45
+!
+interface GigabitEthernet0/0.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.2 255.255.255.254
+ delay 1000
+!
+interface GigabitEthernet0/1
+ ip address 10.0.100.10 255.255.255.254
+ ip ospf cost 1000
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.0 255.255.255.254
+ delay 1000
+!
+interface Serial1/0
+ no ip address
+ shutdown
+ no fair-queue
+ serial restart-delay 0
+!
+interface Serial1/1
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface FastEthernet2/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/0.200
+ encapsulation dot1Q 200
+ ip address 10.0.200.1 255.255.255.254
+ ip ospf cost 10
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+!
+interface FastEthernet2/0.210
+ encapsulation dot1Q 210
+ ip vrf forwarding si
+ ip address 10.0.210.1 255.255.255.254
+ delay 1000
+!
+interface FastEthernet2/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/1.220
+ encapsulation dot1Q 220
+ ip address 10.0.200.7 255.255.255.254
+ ip ospf cost 10
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+!
+interface FastEthernet2/1.230
+ encapsulation dot1Q 230
+ ip vrf forwarding si
+ ip address 10.0.210.7 255.255.255.254
+ delay 1000
+!
+!
+router eigrp 100
+ !
+ address-family ipv4 vrf si 
+  network 10.0.210.0 0.0.0.1
+  network 10.0.210.6 0.0.0.1
+  network 10.0.211.0 0.0.0.1
+  network 10.0.211.2 0.0.0.1
+  network 192.168.10.1 0.0.0.0
+  autonomous-system 100
+ exit-address-family
+!
+router ospf 1
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+ip dns view vrf si default
+ip dns server
+!
+!
+!
+!         
+!
+!
+!
+control-plane
+!
+!
+!
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+scheduler allocate 20000 1000
+end       

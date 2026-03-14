@@ -1,0 +1,187 @@
+Router1800#show run
+Building configuration...
+
+Current configuration : 2691 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Router1800
+!
+boot-start-marker
+boot-end-marker
+!
+enable password lab
+!
+no aaa new-model
+!
+resource policy
+!
+!
+!
+ip cef
+no ip dhcp use vrf connected
+ip dhcp excluded-address 10.0.64.0 10.0.64.10
+!
+ip dhcp pool META_POOL
+   network 10.0.64.0 255.255.248.0
+   default-router 10.0.64.8 
+   dns-server 192.168.10.1 
+!
+!
+!
+!
+!
+!
+no spanning-tree vlan 26
+no spanning-tree vlan 27
+no spanning-tree vlan 28
+no spanning-tree vlan 29
+spanning-tree vlan 40 priority 8192
+!
+! 
+!
+bridge irb
+!
+!
+!         
+interface FastEthernet0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet2
+ switchport access vlan 4
+ switchport mode trunk
+ spanning-tree vlan 10 cost 19
+!
+interface FastEthernet3
+ switchport mode trunk
+!
+interface FastEthernet4
+ switchport mode trunk
+ spanning-tree vlan 20 cost 2
+ spanning-tree vlan 30 cost 2
+!
+interface FastEthernet5
+ switchport mode trunk
+ spanning-tree vlan 10 cost 2
+!
+interface FastEthernet6
+!
+interface FastEthernet7
+!
+interface FastEthernet8
+!
+interface FastEthernet9
+!
+interface Dot11Radio0
+ no ip address
+ !
+ encryption mode ciphers tkip 
+ !
+ encryption vlan 10 mode ciphers tkip 
+ !
+ ssid sarthak_google
+    vlan 10
+    authentication open 
+    authentication key-management wpa
+    guest-mode
+    wpa-psk ascii 0 Geminipass
+ !
+ speed basic-1.0 2.0 5.5 6.0 9.0 11.0 12.0 18.0 24.0 36.0 48.0 54.0
+ station-role root
+!
+interface Dot11Radio0.10
+ encapsulation dot1Q 10
+ no snmp trap link-status
+ no cdp enable
+ bridge-group 1
+!
+interface Dot11Radio1
+ no ip address
+ !
+ ssid sarthak_microsoft
+    vlan 20
+    authentication open 
+    guest-mode
+ !
+ speed basic-6.0 9.0 basic-12.0 18.0 basic-24.0 36.0 48.0 54.0
+ station-role root
+!
+interface Dot11Radio1.20
+ encapsulation dot1Q 20
+ no snmp trap link-status
+ no cdp enable
+ bridge-group 2
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan30
+ no ip address
+ bridge-group 3
+!
+interface Vlan10
+ no ip address
+ bridge-group 1
+!
+interface Vlan20
+ no ip address
+ bridge-group 2
+!         
+interface Vlan40
+ no ip address
+!
+interface BVI1
+ ip address 10.0.0.6 255.255.224.0
+!
+interface BVI2
+ ip address 10.0.32.6 255.255.224.0
+!
+interface BVI3
+ ip address 10.0.64.6 255.255.248.0
+!
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+!         
+control-plane
+!
+bridge 1 protocol ieee
+bridge 1 route ip
+bridge 2 protocol ieee
+bridge 2 route ip
+bridge 3 protocol ieee
+bridge 3 route ip
+!
+line con 0
+line 1
+line aux 0
+line vty 0 4
+!
+!
+webvpn context Default_context
+ ssl authenticate verify all
+ !
+ no inservice
+!
+end
+
+Router1800#      

@@ -1,0 +1,224 @@
+Boulder#show run
+Building configuration...
+
+
+Current configuration : 3325 bytes
+!
+! Last configuration change at 08:28:19 UTC Wed Mar 11 2026
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Boulder
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password lab
+!
+no aaa new-model
+!
+no network-clock-participate slot 2 
+!
+dot11 syslog
+ip source-route
+!         
+!
+!
+ip vrf si
+ rd 100:1
+!
+ip cef
+!
+!
+ip domain name sarthak.com
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!         
+!
+crypto pki token default removal timeout 0
+!
+!
+!
+!
+license udi pid CISCO3825 sn FTX1329A1HP
+username sarthak password 0 lab
+!
+redundancy
+!
+!
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 10.0.100.9 255.255.255.254
+ ip ospf cost 10
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/0.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.3 255.255.255.254
+ delay 200
+!
+interface GigabitEthernet0/1
+ ip address 10.0.100.12 255.255.255.254
+ ip ospf cost 100
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.5 255.255.255.254
+!
+interface Serial0/0/0
+ ip address 10.0.255.0 255.255.255.254
+ ip ospf 1 area 0
+!
+interface Serial0/0/1
+ ip vrf forwarding si
+ ip address 10.0.255.1 255.255.255.254
+ clock rate 2000000
+!
+interface Serial0/1/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/1/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!         
+interface Serial0/2/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet2/0
+ ip address 10.0.100.14 255.255.255.254
+ ip ospf cost 100
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/0.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.9 255.255.255.254
+ delay 200
+!
+interface FastEthernet2/1
+ ip address 10.0.100.7 255.255.255.254
+ ip ospf cost 100
+ ip ospf mtu-ignore
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/1.50
+ encapsulation dot1Q 50
+ ip vrf forwarding si
+ ip address 10.0.211.7 255.255.255.254
+!
+!
+router eigrp 100
+ !
+ address-family ipv4 vrf si autonomous-system 100
+  redistribute static
+  network 10.0.211.2 0.0.0.1
+  network 10.0.211.4 0.0.0.1
+  network 10.0.211.6 0.0.0.1
+  network 10.0.211.8 0.0.0.1
+  network 10.0.255.0 0.0.0.1
+  autonomous-system 100
+ exit-address-family
+!
+router ospf 1
+ redistribute static subnets
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.32.0 255.255.224.0 Serial0/0/0 10.0.255.1
+ip route 10.0.64.0 255.255.248.0 Serial0/0/0 10.0.255.1
+ip route vrf si 6.6.6.6 255.255.255.255 Serial0/0/1 10.0.255.0
+ip route vrf si 10.0.0.0 255.255.224.0 Serial0/0/1 10.0.255.0
+ip route vrf si 10.0.72.0 255.255.254.0 Serial0/0/1 10.0.255.0
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!         
+line con 0
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+end
+
+Boulder#      
