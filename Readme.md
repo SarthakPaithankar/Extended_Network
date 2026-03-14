@@ -1,7 +1,7 @@
 Group 1 OSPF
-![Group 1 network map](/images/ospf_network.jpeg)
+![Group 1 network map](ospf_network.jpeg)
 Group 2 EIGRP
-![Group 1 network map](/images/eigrp_network.jpeg)
+![Group 1 network map](eigrp_network.jpeg)
 
 Time to complete [~40 hours]
 
